@@ -1,0 +1,391 @@
+/* ============================================
+   TOKENS
+   ============================================ */
+:root {
+  --cream: #FBF6EE;
+  --white: #FFFFFF;
+  --orange: #E8732C;
+  --orange-deep: #C75A1C;
+  --peach: #F6E0CC;
+  --peach-soft: #FBE9D6;
+  --ink: #3A2E26;
+  --ink-soft: #7A6A5E;
+  --border-soft: #ECE0D2;
+
+  --blue: #3B6FA8;
+  --green: #4C8B5F;
+  --green-bg: #E7F2E9;
+  --purple: #7C5BA8;
+  --purple-bg: #F0E5F9;
+
+  --font-display: 'Fredoka', sans-serif;
+  --font-body: 'Work Sans', sans-serif;
+
+  --radius-lg: 28px;
+  --radius-md: 16px;
+  --radius-pill: 999px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--cream);
+}
+
+/* ============================================
+   TOP BAR
+   ============================================ */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+  background: var(--white);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.topbar__icon-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.topbar__name-accent {
+  color: var(--orange);
+}
+
+.topbar__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.topbar__badge {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #FDEAE3;
+  color: var(--orange-deep);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-pill);
+}
+
+.topbar__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name {
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.logout-link {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  margin-left: 0.5rem;
+  transition: color 0.15s ease;
+}
+
+.logout-link:hover {
+  color: var(--orange-deep);
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+.page-header {
+  margin-bottom: 2.5rem;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.page-header p {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+}
+
+/* ============================================
+   REFUNDS LIST
+   ============================================ */
+.refunds-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.refund-card {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-left: 4px solid var(--purple);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: 0 2px 12px rgba(58, 46, 38, 0.06);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.refund-card.is-refunded {
+  opacity: 0;
+  transform: translateX(20px);
+  background: var(--green-bg);
+}
+
+/* ----- Header ----- */
+.refund-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.refund-card__header h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+}
+
+.booking-id-tag {
+  display: inline-block;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--cream);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-soft);
+}
+
+.status-flag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--purple-bg);
+  color: var(--purple);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ----- Details grid ----- */
+.refund-card__details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.detail-item__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+.detail-item__value {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ----- Reason ----- */
+.refund-card__reason {
+  background: var(--cream);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.refund-card__reason p {
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin-top: 0.4rem;
+  line-height: 1.5;
+}
+
+/* ----- Footer ----- */
+.refund-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.amount-label {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.amount-label strong {
+  color: var(--orange);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.btn-mark-refunded {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--white);
+  background: var(--green);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-mark-refunded:hover {
+  background: #3D7249;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(76, 139, 95, 0.3);
+}
+
+.btn-mark-refunded:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.empty-state {
+  text-align: center;
+  background: var(--white);
+  border: 1.5px dashed var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 4rem 2rem;
+}
+
+.empty-state__icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .content {
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .refund-card {
+    padding: 1.25rem;
+  }
+
+  .refund-card__header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .refund-card__details {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .refund-card__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-mark-refunded {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 1rem 1.25rem;
+  }
+
+  .user-name {
+    display: none;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

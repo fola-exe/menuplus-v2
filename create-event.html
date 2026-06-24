@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if mode == "edit" %}Edit Event{% else %}Create Event{% endif %} | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/create-event.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img">
+        <span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span>
+      </div>
+      <div class="topbar__user"><a href="{{ url_for('auth.logout_customer') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <div class="form-shell">
+        <div class="form-shell__header">
+          <h1>{% if mode == "edit" %}Edit your event{% else %}Tell us about your event{% endif %}</h1>
+          <p>These details map directly to the EVENT table.</p>
+        </div>
+        <form class="event-form" method="post">
+          <div class="form-row">
+            <div class="field-group">
+              <label for="event-name">Event name</label>
+              <input type="text" id="event-name" name="event-name" value="{{ event.EventName if event else '' }}" required>
+            </div>
+          </div>
+          <div class="form-row form-row--split">
+            <div class="field-group">
+              <label for="event-date">Event date</label>
+              <input type="date" id="event-date" name="event-date" value="{{ event.EventDate.isoformat() if event and event.EventDate else '' }}" required>
+            </div>
+            <div class="field-group">
+              <label for="event-time">Starting time</label>
+              <input type="time" id="event-time" name="event-time" value="{{ event.EventTime.strftime('%H:%M') if event and event.EventTime else '' }}" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label for="venue">Venue location</label>
+              <input type="text" id="venue" name="venue" value="{{ event.Address if event else '' }}" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label for="guest-count">Expected guest number</label>
+              <input type="number" id="guest-count" name="guest-count" value="{{ event.GuestCount if event else 100 }}" min="1">
+            </div>
+          </div>
+          <div class="form-actions">
+            <a href="{{ url_for('customer.dashboard') }}" class="btn-ghost">Back to dashboard</a>
+            <button type="submit" class="btn-primary">Continue to menu</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

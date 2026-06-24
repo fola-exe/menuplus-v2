@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Log In | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin-login.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <aside class="brand-panel">
+      <div class="brand-content">
+        <div class="brand-mark">
+          <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="brand-mark__icon-img">
+          <span class="brand-mark__name">menuplus</span>
+        </div>
+        <h1 class="brand-headline">Operations<br>control center.</h1>
+      </div>
+    </aside>
+    <main class="form-panel">
+      <div class="form-card">
+        <div class="form-header">
+          <h2>Admin access</h2>
+          <p>Log in to manage operations.</p>
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+          {% if messages %}<p class="form-error">{{ messages[0] }}</p>{% endif %}
+        {% endwith %}
+        <form class="login-form" method="post" action="{{ url_for('admin_auth.login') }}">
+          <div class="field-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="admin@menuplus.com" autocomplete="email" required>
+          </div>
+          <div class="field-group">
+            <label for="password">Password</label>
+            <div class="password-input">
+              <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Log in to admin portal</button>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

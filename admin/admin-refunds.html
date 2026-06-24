@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refunds Queue | MenuPlus Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin-refunds.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand"><img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img"><span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span><span class="topbar__badge">Admin</span></div>
+      <div class="topbar__user"><a href="{{ url_for('admin_auth.logout_admin') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <div class="page-header"><h1>Refunds Queue</h1><p>Cancelled paid bookings inferred from existing PAYMENT rows.</p></div>
+      <div class="refunds-list">
+        {% for event in events %}
+          {% set order = latest_order_for_event(event) %}
+          {% set invoice = latest_invoice_for_order(order) %}
+          <article class="refund-card">
+            <div class="refund-card__header"><div><h3>{{ event.customer.Name }}</h3><span class="booking-id-tag">{{ booking_id(event) }}</span></div><span class="status-flag">Requires Refund</span></div>
+            <div class="refund-card__details">
+              <div class="detail-item"><span class="detail-item__label">Original Event Date</span><span class="detail-item__value">{{ event.EventDate }}</span></div>
+              <div class="detail-item"><span class="detail-item__label">Guest Count</span><span class="detail-item__value">{{ event.GuestCount }} guests</span></div>
+              <div class="detail-item"><span class="detail-item__label">Invoice Status</span><span class="detail-item__value">{{ invoice.Status }}</span></div>
+            </div>
+            <div class="refund-card__footer">
+              <span class="amount-label">Invoice total: <strong>NGN {{ "{:,.2f}".format(grand_total(invoice)) }}</strong></span>
+              <form method="post" action="{{ url_for('admin.mark_refunded', invoice_id=invoice.InvoiceID) }}"><button type="submit" class="btn-mark-refunded">Mark as refunded</button></form>
+            </div>
+          </article>
+        {% else %}
+          <div class="empty-state"><h3>No refunds pending</h3><p>There are currently no paid cancelled bookings.</p></div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</body>
+</html>

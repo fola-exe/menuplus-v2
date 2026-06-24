@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <aside class="brand-panel">
+      <div class="brand-content">
+        <div class="brand-mark">
+          <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="brand-mark__icon-img">
+          <span class="brand-mark__name">menuplus</span>
+        </div>
+        <h1 class="brand-headline">Plan your<br>next event.</h1>
+      </div>
+    </aside>
+    <main class="form-panel">
+      <div class="form-card">
+        <div class="form-header">
+          <h2>Create account</h2>
+          <p>Register as a customer.</p>
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+          {% if messages %}<p class="form-error">{{ messages[0] }}</p>{% endif %}
+        {% endwith %}
+        <form class="login-form" method="post" action="{{ url_for('auth.register') }}">
+          <div class="field-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="field-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          <div class="field-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit" class="btn-primary">Create account</button>
+          <p class="signup-prompt">Already registered? <a href="{{ url_for('auth.login') }}" class="inline-link inline-link--bold">Log in</a></p>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Calendar | MenuPlus Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin-calendar.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand"><img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img"><span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span><span class="topbar__badge">Admin</span></div>
+      <div class="topbar__user"><a href="{{ url_for('admin_auth.logout_admin') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <div class="page-header"><h1>Event Calendar</h1><p>Track all bookings.</p></div>
+      <div class="status-filter">
+        {% for s in ["all", "pending", "approved", "cancelled"] %}
+          <a class="filter-btn {% if status == s %}is-active{% endif %}" href="{{ url_for('admin.calendar', status=s) }}">{{ s|title }}</a>
+        {% endfor %}
+      </div>
+      <div class="table-wrapper">
+        <table class="events-table">
+          <thead><tr><th>Date</th><th>Time</th><th>Customer</th><th>Guests</th><th>Items</th><th>Status</th><th>Payment</th></tr></thead>
+          <tbody>
+            {% for event in events %}
+              {% set order = latest_order_for_event(event) %}
+              {% set invoice = latest_invoice_for_order(order) if order else None %}
+              <tr class="table-row table-row--{{ order.OrderStatus if order else 'draft' }}" onclick="window.location='{{ url_for('admin.event_detail', event_id=event.EventID) }}'">
+                <td class="table-cell table-cell--date">{{ event.EventDate }}</td>
+                <td class="table-cell">{{ event.EventTime }}</td>
+                <td class="table-cell table-cell--customer">{{ event.customer.Name }}</td>
+                <td class="table-cell table-cell--number">{{ event.GuestCount }}</td>
+                <td class="table-cell table-cell--number">{{ order.order_items|length if order else 0 }}</td>
+                <td class="table-cell"><span class="badge badge--{{ order.OrderStatus if order else 'draft' }}">{{ order.OrderStatus if order else "draft" }}</span></td>
+                <td class="table-cell"><span class="badge badge--payment">{{ payment_status(invoice) if invoice else "unpaid" }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

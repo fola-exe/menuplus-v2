@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build Your Menu | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/menu.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img">
+        <span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span>
+      </div>
+      <div class="topbar__user"><a href="{{ url_for('auth.logout_customer') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <form method="post" action="{{ url_for('customer.menu', event_id=event.EventID) }}">
+        <div class="menu-layout">
+          <div class="menu-browse">
+            <section class="menu-section">
+              <h2 class="menu-section__title">Available Menu Items</h2>
+              <div class="item-grid">
+                {% for item in menu_items %}
+                  <article class="item-card">
+                    <div class="item-card__top"><h3>{{ item.ItemName }}</h3></div>
+                    <p class="item-card__price">NGN {{ "{:,.2f}".format(item.Price or 0) }}</p>
+                    <div class="item-card__controls">
+                      <div class="stepper stepper--sm">
+                        <input type="number" name="quantity_{{ item.MenuItemID }}" value="{{ existing.get(item.MenuItemID, 0) }}" min="0" inputmode="numeric">
+                      </div>
+                    </div>
+                  </article>
+                {% else %}
+                  <p class="cart-empty">No menu items have been created by staff yet.</p>
+                {% endfor %}
+              </div>
+            </section>
+          </div>
+          <aside class="cart-sidebar">
+            <div class="cart-card">
+              <h2 class="cart-card__title">Your order</h2>
+              <p class="cart-empty">Set quantities for the items you want. Use 0 to remove an item.</p>
+              <button type="submit" class="btn-primary btn-primary--full">Proceed to checkout</button>
+            </div>
+          </aside>
+        </div>
+      </form>
+    </main>
+  </div>
+</body>
+</html>

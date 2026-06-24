@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin-dashboard.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img">
+        <span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span>
+        <span class="topbar__badge">Admin</span>
+      </div>
+      <div class="topbar__user"><a href="{{ url_for('admin_auth.logout_admin') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <section class="welcome-section">
+        <h1>Operations dashboard</h1>
+        <p>Database-backed booking workflow.</p>
+      </section>
+      <section class="stats-grid">
+        <div class="stat-card stat-card--pending"><div class="stat-card__number">{{ pending_count }}</div><div class="stat-card__label">Pending Approvals</div><a href="{{ url_for('admin.approvals') }}" class="stat-card__link">Review</a></div>
+        <div class="stat-card stat-card--upcoming"><div class="stat-card__number">{{ upcoming_count }}</div><div class="stat-card__label">Approved Events</div><a href="{{ url_for('admin.calendar') }}" class="stat-card__link">View calendar</a></div>
+        <div class="stat-card stat-card--completed"><div class="stat-card__number">{{ completed_count }}</div><div class="stat-card__label">Completed</div><a href="{{ url_for('admin.calendar') }}" class="stat-card__link">Details</a></div>
+        <div class="stat-card stat-card--refunds"><div class="stat-card__number">{{ refunds_count }}</div><div class="stat-card__label">Requires Refund</div><a href="{{ url_for('admin.refunds') }}" class="stat-card__link">Process</a></div>
+      </section>
+      <section class="actions-section">
+        <h2>Quick Actions</h2>
+        <div class="actions-grid">
+          <a href="{{ url_for('menu.manage') }}" class="action-card"><h3>Menu & Items</h3><p>Create, edit, or delete menu items.</p></a>
+          <a href="{{ url_for('admin.calendar') }}" class="action-card"><h3>Event Calendar</h3><p>View all bookings.</p></a>
+          <a href="{{ url_for('admin.approvals') }}" class="action-card"><h3>Pending Approvals</h3><p>Approve or cancel orders.</p></a>
+          <a href="{{ url_for('admin.refunds') }}" class="action-card"><h3>Refunds Queue</h3><p>Infer refunds from cancelled paid invoices.</p></a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

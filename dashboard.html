@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/dashboard.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img">
+        <span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span>
+      </div>
+      <div class="topbar__user">
+        <span class="user-avatar">{{ customer.Name[:1] }}</span>
+        <span class="user-name">{{ customer.Name }}</span>
+        <a href="{{ url_for('auth.logout_customer') }}" class="logout-link">Log out</a>
+      </div>
+    </header>
+    <main class="content">
+      <section class="hero">
+        <div class="hero__text">
+          <p class="hero__eyebrow">Welcome back, {{ customer.Name }}</p>
+          <h1 class="hero__headline">Ready to plan<br>your next event?</h1>
+          <p class="hero__subtext">Pick a date, set your guest count, and build your menu.</p>
+          <a href="{{ url_for('customer.create_event') }}" class="btn-primary btn-primary--large">Create event</a>
+        </div>
+      </section>
+      <section class="events-section">
+        <div class="events-section__header"><h2>Your events</h2></div>
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+          {% if messages %}<p class="form-error">{{ messages[0] }}</p>{% endif %}
+        {% endwith %}
+        <div class="events-list">
+          {% for event in events %}
+            {% set order = latest_order_for_event(event) %}
+            {% set status = order.OrderStatus if order else "draft" %}
+            <article class="event-card">
+              <div class="event-card__date">
+                <span class="event-card__day">{{ event.EventDate.strftime("%d") if event.EventDate else "--" }}</span>
+                <span class="event-card__month">{{ event.EventDate.strftime("%b") if event.EventDate else "" }}</span>
+              </div>
+              <div class="event-card__info">
+                <h3>{{ event.EventName }}</h3>
+                <p class="event-card__meta">{{ event.GuestCount or 0 }} guests · {{ event.Address or "Venue pending" }} · {{ booking_id(event) }}</p>
+                {% if status == "cancelled" %}
+                  <div class="action-buttons">
+                    <a href="{{ url_for('customer.edit_event', event_id=event.EventID) }}" class="btn-secondary">Edit Order</a>
+                    <form method="post" action="{{ url_for('customer.delete_event', event_id=event.EventID) }}">
+                      <button type="submit" class="btn-secondary">Delete Order</button>
+                    </form>
+                  </div>
+                {% endif %}
+              </div>
+              <span class="status-badge status-badge--{{ status }}">{{ status|replace("_", " ")|title }}</span>
+            </article>
+          {% else %}
+            <div class="empty-state">
+              <h3>No events yet</h3>
+              <p>Once you create your first event, it'll show up here.</p>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

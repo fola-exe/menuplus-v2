@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Submitted | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/confirmation.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img">
+        <span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span>
+      </div>
+      <div class="topbar__user"><a href="{{ url_for('auth.logout_customer') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <div class="success-card">
+        <div class="success-icon">OK</div>
+        <h1>Booking submitted</h1>
+        <p class="success-headline">Your event has entered admin review.</p>
+        <div class="details-box">
+          <p><strong>Your booking ID:</strong><br><code class="booking-id">{{ booking_id(event) }}</code></p>
+        </div>
+        <div class="details-box">
+          <p><strong>Status:</strong><br>{{ order.OrderStatus|title if order else "Pending" }}</p>
+        </div>
+        <div class="action-buttons">
+          <a href="{{ url_for('customer.dashboard') }}" class="btn-primary">Back to dashboard</a>
+          <a href="{{ url_for('customer.create_event') }}" class="btn-secondary">Create another event</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

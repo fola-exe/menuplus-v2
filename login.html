@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <aside class="brand-panel">
+      <div class="brand-content">
+        <div class="brand-mark">
+          <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="brand-mark__icon-img">
+          <span class="brand-mark__name">menuplus</span>
+        </div>
+        <h1 class="brand-headline">Good food,<br>well planned.</h1>
+        <p class="brand-subtext">Build your menu, set your date, and we'll handle the rest.</p>
+      </div>
+    </aside>
+    <main class="form-panel">
+      <div class="form-card">
+        <div class="form-header">
+          <h2>Welcome back</h2>
+          <p>Log in to plan your next event.</p>
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+          {% if messages %}<p class="form-error">{{ messages[0] }}</p>{% endif %}
+        {% endwith %}
+        <form class="login-form" method="post" action="{{ url_for('auth.login') }}">
+          <div class="field-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="field-group">
+            <label for="password">Password</label>
+            <div class="password-input">
+              <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Log in</button>
+          <div class="divider"><span>or</span></div>
+          <p class="signup-prompt">New to MenuPlus? <a href="{{ url_for('auth.register') }}" class="inline-link inline-link--bold">Create an account</a></p>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

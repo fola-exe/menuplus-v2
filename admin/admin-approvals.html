@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Approvals | MenuPlus Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin-approvals.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand"><img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img"><span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span><span class="topbar__badge">Admin</span></div>
+      <div class="topbar__user"><a href="{{ url_for('admin_auth.logout_admin') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <div class="page-header"><h1>Pending Approvals</h1><p>Review submitted orders.</p></div>
+      {% with messages = get_flashed_messages(category_filter=["error"]) %}
+        {% if messages %}<p class="form-error">{{ messages[0] }}</p>{% endif %}
+      {% endwith %}
+      <div class="requests-list">
+        {% for approval in approvals %}
+          {% set invoice = approval.invoice %}
+          {% set order = invoice.order %}
+          {% set event = order.event %}
+          <article class="request-card">
+            <div class="request-card__header">
+              <div><h3>{{ event.customer.Name }}</h3><span class="account-badge account-badge--individual">{{ booking_id(event) }}</span></div>
+              <span class="reason-badge">Pending admin review</span>
+            </div>
+            <div class="request-card__details">
+              <div class="detail-item"><span class="detail-item__label">Date & Time</span><span class="detail-item__value">{{ event.EventDate }} {{ event.EventTime }}</span></div>
+              <div class="detail-item"><span class="detail-item__label">Venue</span><span class="detail-item__value">{{ event.Address }}</span></div>
+              <div class="detail-item"><span class="detail-item__label">Guest Count</span><span class="detail-item__value">{{ event.GuestCount }} guests</span></div>
+            </div>
+            <div class="request-card__items">
+              <span class="detail-item__label">Order Summary</span>
+              <ul class="items-list">{% for line in order.order_items %}<li>{{ line.Quantity }} x {{ line.menu_item.ItemName }}</li>{% endfor %}</ul>
+            </div>
+            <div class="request-card__footer">
+              <span class="subtotal-label">Grand total: <strong>NGN {{ "{:,.2f}".format(grand_total(invoice)) }}</strong></span>
+              <div class="request-card__actions">
+                <form method="post" action="{{ url_for('admin.cancel', approval_id=approval.ApprovalID) }}"><button type="submit" class="btn-cancel">Cancel</button></form>
+                <form method="post" action="{{ url_for('admin.approve', approval_id=approval.ApprovalID) }}"><button type="submit" class="btn-approve">Approve</button></form>
+              </div>
+            </div>
+          </article>
+        {% else %}
+          <div class="empty-state"><h3>All caught up</h3><p>There are no pending approval requests.</p></div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</body>
+</html>

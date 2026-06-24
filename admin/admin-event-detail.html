@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Details | MenuPlus Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin-event-detail.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand"><img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img"><span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span><span class="topbar__badge">Admin</span></div>
+      <div class="topbar__user"><a href="{{ url_for('admin_auth.logout_admin') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <a href="{{ url_for('admin.calendar') }}" class="back-link">Back to calendar</a>
+      <div class="event-header">
+        <div><h1>{{ event.EventName }}</h1><span class="booking-id-tag">{{ booking_id(event) }}</span></div>
+        <span class="status-badge status-badge--{{ order.OrderStatus if order else 'draft' }}">{{ order.OrderStatus if order else "draft" }}</span>
+      </div>
+      <div class="detail-layout">
+        <div class="info-column">
+          <section class="info-card">
+            <h2>Event Details</h2>
+            <div class="info-grid">
+              <div class="info-item"><span class="info-item__label">Customer</span><span class="info-item__value">{{ event.customer.Name }}</span></div>
+              <div class="info-item"><span class="info-item__label">Date & Time</span><span class="info-item__value">{{ event.EventDate }} {{ event.EventTime }}</span></div>
+              <div class="info-item"><span class="info-item__label">Venue</span><span class="info-item__value">{{ event.Address }}</span></div>
+              <div class="info-item"><span class="info-item__label">Guest Count</span><span class="info-item__value">{{ event.GuestCount }} guests</span></div>
+            </div>
+          </section>
+          <section class="info-card">
+            <h2>Order Summary</h2>
+            <ul class="order-list">
+              {% for line in order.order_items if order %}
+                <li><span>{{ line.Quantity }} x {{ line.menu_item.ItemName }}</span><span>NGN {{ "{:,.2f}".format((line.PriceAtOrderTime or 0) * line.Quantity) }}</span></li>
+              {% endfor %}
+            </ul>
+            {% if invoice %}
+              <div class="order-total"><span>Grand Total</span><span>NGN {{ "{:,.2f}".format(grand_total(invoice)) }}</span></div>
+            {% endif %}
+          </section>
+        </div>
+        <div class="management-column">
+          <section class="management-card">
+            <h2>Payment Status</h2>
+            <p class="management-card__hint">{{ payment_status(invoice) if invoice else "unpaid" }}</p>
+            {% if invoice %}
+              <form method="post">
+                <input type="hidden" name="action" value="payment">
+                <div class="field-group">
+                  <label for="amount">Payment amount</label>
+                  <input id="amount" name="amount" type="number" min="1" step="0.01" required>
+                </div>
+                <button type="submit" class="btn-save">Record payment</button>
+              </form>
+            {% endif %}
+          </section>
+          {% if order and order.OrderStatus != "cancelled" and invoice %}
+            <section class="management-card management-card--danger">
+              <h2>Event Actions</h2>
+              <form method="post">
+                <input type="hidden" name="action" value="cancel">
+                <button type="submit" class="btn-cancel-event">Cancel this event</button>
+              </form>
+            </section>
+          {% endif %}
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | MenuPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/checkout.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <img src="/assets/logo-icon.jpg" alt="MenuPlus logo" class="topbar__icon-img">
+        <span class="topbar__name">menu<span class="topbar__name-accent">plus</span></span>
+      </div>
+      <div class="topbar__user"><a href="{{ url_for('auth.logout_customer') }}" class="logout-link">Log out</a></div>
+    </header>
+    <main class="content">
+      <div class="checkout-layout">
+        <section class="order-section">
+          <div class="order-section__header">
+            <h1>Review your order</h1>
+            <p>{{ event.EventName }}</p>
+          </div>
+          <div class="order-items">
+            {% for line in order.order_items %}
+              <article class="order-item">
+                <div class="order-item__info">
+                  <h3>{{ line.menu_item.ItemName }}</h3>
+                  <p class="order-item__qty">{{ line.Quantity }} x NGN {{ "{:,.2f}".format(line.PriceAtOrderTime or 0) }}</p>
+                </div>
+                <span class="order-item__total">NGN {{ "{:,.2f}".format((line.PriceAtOrderTime or 0) * line.Quantity) }}</span>
+              </article>
+            {% else %}
+              <p class="empty-order">Your order is empty. <a href="{{ url_for('customer.menu', event_id=event.EventID) }}">Go back to select items.</a></p>
+            {% endfor %}
+          </div>
+        </section>
+        <aside class="billing-section">
+          <div class="billing-card">
+            <h2 class="billing-card__title">Booking Summary</h2>
+            {% set subtotal = order_subtotal(order) %}
+            {% set service = order_service(subtotal) %}
+            <div class="billing-breakdown">
+              <div class="billing-row"><span class="billing-label">Item subtotal</span><span class="billing-value">NGN {{ "{:,.2f}".format(subtotal) }}</span></div>
+              <div class="billing-row"><span class="billing-label">Service charge (10%)</span><span class="billing-value">NGN {{ "{:,.2f}".format(service) }}</span></div>
+              <div class="billing-divider"></div>
+              <div class="billing-row billing-row--grand"><span class="billing-label">Grand total</span><span class="billing-value billing-value--grand">NGN {{ "{:,.2f}".format(subtotal + service) }}</span></div>
+            </div>
+            <form method="post">
+              <button type="submit" class="btn-primary btn-primary--full">Confirm booking</button>
+            </form>
+            <a href="{{ url_for('customer.menu', event_id=event.EventID) }}" class="edit-link">Edit your order</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
