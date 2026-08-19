@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MenuPlus Invoice - Professional Catering Invoice">
+    <title>MenuPlus Invoice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="invoice.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <!-- Action Bar -->
+    <div class="action-bar no-print" id="action-bar">
+        <div class="action-bar-inner">
+            <a href="#" class="back-link" id="back-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Back to Dashboard
+            </a>
+            <div class="action-buttons">
+                <button class="btn btn-outline" id="print-btn" onclick="window.print()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print
+                </button>
+                <button class="btn btn-primary" id="download-pdf-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Page -->
+    <div class="invoice-page-wrapper">
+        <div class="invoice-page" id="invoice">
+
+            <!-- Decorative Watermark -->
+            <div class="watermark-decoration" aria-hidden="true"></div>
+
+            <!-- Header: Logo + Address -->
+            <header class="invoice-header">
+                <div class="logo-area">
+                    <img src="menuplus_logo.png" alt="MenuPlus Logo" class="company-logo" id="company-logo">
+                </div>
+                <div class="header-address">
+                    <p id="company-address-line">28 Majaro Street, Onike, Yabba, Lagos. Tel 0802 836 3103</p>
+                    <p id="company-contact-line">Email: menuplusng@gmail.com &nbsp; Website: www.menuplusng.com</p>
+                </div>
+            </header>
+
+            <!-- Invoice Title + Client + Meta -->
+            <section class="invoice-intro">
+                <div class="intro-left">
+                    <div class="bill-to">
+                        <span class="label-to">To:</span>
+                        <p class="client-name" id="client-name">Oracle Experience</p>
+                        <p class="client-location" id="client-location">Lagos</p>
+                    </div>
+                </div>
+                <div class="intro-right">
+                    <h1 class="invoice-title">INVOICE</h1>
+                    <div class="invoice-meta-table">
+                        <div class="meta-row">
+                            <span class="meta-label">INVOICE NUMBER</span>
+                            <span class="meta-value" id="invoice-number">OE09012026</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">INVOICE DATE</span>
+                            <span class="meta-value" id="invoice-date">9<sup>TH</sup> JANUARY 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Items Table -->
+            <section class="items-section">
+                <table class="invoice-table" id="items-table">
+                    <thead>
+                        <tr>
+                            <th class="col-sn">S/N</th>
+                            <th class="col-detail">DETAIL</th>
+                            <th class="col-qty">QUANTITY</th>
+                            <th class="col-price">UNIT PRICE (₦)</th>
+                            <th class="col-total">TOTAL AMOUNT (₦)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Totals Breakdown -->
+            <section class="totals-section">
+                <table class="totals-table" id="totals-table">
+                    <tbody id="totals-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Amount in Words -->
+            <section class="amount-words-section">
+                <span class="amount-label">Amount in words:</span>
+                <span class="amount-text" id="amount-in-words">Four Million and Thirty Two Thousand Naira only</span>
+            </section>
+
+            <!-- Event Date -->
+            <section class="event-section">
+                <div class="event-row">
+                    <span class="event-label">EVENT DATE</span>
+                    <span class="event-value" id="event-date"></span>
+                </div>
+                <div class="event-row">
+                    <span class="event-label">DAY OF THE WEEK</span>
+                    <span class="event-value" id="event-day"></span>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="invoice-footer">
+                <div class="footer-line"></div>
+                <p id="footer-address">28 Majaro Street, Onike, Yabba, Lagos. Tel 0802 836 3103</p>
+                <p id="footer-contact">Email: menuplusng@gmail.com &nbsp; Website: www.menuplusng.com</p>
+            </footer>
+
+            <!-- Page 2: Signature -->
+            <div class="page-break"></div>
+
+            <header class="invoice-header page2-header">
+                <div class="logo-area">
+                    <img src="menuplus_logo.png" alt="MenuPlus Logo" class="company-logo">
+                </div>
+                <div class="header-address">
+                    <p>28 Majaro Street, Onike, Yabba, Lagos. Tel 0802 836 3103</p>
+                    <p>Email: menuplusng@gmail.com &nbsp; Website: www.menuplusng.com</p>
+                </div>
+            </header>
+
+            <section class="signature-section">
+                <p class="sig-for">For: <strong>menuplus</strong></p>
+                <div class="sig-line" id="signature-area">
+                    <!-- Signature image or line -->
+                </div>
+                <p class="sig-name" id="sig-name"><em>Olayinka Adeniyi (Mrs.)</em></p>
+                <p class="sig-title" id="sig-title">Kitchen Manager</p>
+            </section>
+
+            <footer class="invoice-footer page2-footer">
+                <div class="footer-line"></div>
+                <p>28 Majaro Street, Onike, Yabba, Lagos. Tel 0802 836 3103</p>
+                <p>Email: menuplusng@gmail.com &nbsp; Website: www.menuplusng.com</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-card">
+            <div class="spinner"></div>
+            <p>Generating PDF...</p>
+        </div>
+    </div>
+
+    <script src="invoice.js"></script>
+</body>
+</html>
